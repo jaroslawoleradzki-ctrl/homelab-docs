@@ -61,3 +61,13 @@ Dokumentacja operacyjna znajduje się w katalogu `runbooks`.
 ## Dostępne
 
 - [Unbound](runbooks/unbound.md)
+
+## Dokumentacja
+
+### Dashboard administratora
+
+- [Dashboard](inventory/dashboard.md)
+
+### Runbooki
+
+- [Unbound](runbooks/unbound.md)
