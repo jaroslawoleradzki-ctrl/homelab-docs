@@ -40,11 +40,7 @@ Do uzupełnienia:
 * certyfikaty SSL,
 * usługi wystawione poza LAN,
 * usługi dostępne tylko lokalnie.
-    EOF
-Potem:
 
-```bash
-cat > inventory/services.md <<'EOF'
 # Inwentaryzacja usług
 
 | Usługa | Status | Przeznaczenie |
