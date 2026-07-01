@@ -25,7 +25,7 @@
 | Nginx Proxy Manager | | | | | | |
 | Pi-hole | | | | 8080 | ✅ | |
 | Unbound | localhost | — | — | 5335 | ✅ | ✅ runbooks/unbound.md |
-| Nextcloud | | | | | | |
+| Nextcloud | http://192.168.100.22:8087| | | | | |
 | Paperless | | | | | | |
 | OpenProject | | | | | | |
 | Stirling PDF | | | | | | |
