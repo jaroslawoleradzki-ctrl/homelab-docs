@@ -1,73 +1,53 @@
 # HomeLab
 
-**Wersja dokumentacji:** 0.1  
-**Data utworzenia:** 2026-07-01
+Repozytorium zawiera dokumentację oraz konfigurację mojego HomeLaba.
 
-## Cel projektu
+## Cel
 
-HomeLab jest prywatnym środowiskiem serwerowym opartym o Docker, którego zadaniem jest wspieranie:
+HomeLab jest centralną platformą IT wykorzystywaną do:
 
-- działalności konsultingowej,
-- rozwoju własnych aplikacji,
-- zarządzania dokumentacją,
+- prywatnej chmury plików,
+- zarządzania dokumentami,
+- przechowywania zdjęć,
 - środowiska AI,
 - automatyzacji,
-- monitoringu infrastruktury,
-- bezpiecznego przechowywania danych.
-
-Dokumentacja jest rozwijana równolegle z projektem.
-
-## Stan obecny
-
-- Hostname: `homelab`
-- IP LAN: `192.168.100.22`
-- System: Ubuntu 24.04.4 LTS
-- Kernel: Linux 6.8.0-124
-- Architektura: x86_64
-- Sprzęt: HP EliteDesk 800 G3 SFF
-- Kontenery: Docker
-
-## Główne usługi
-
-- Nextcloud
-- Paperless-ngx
-- Pi-hole
-- Unbound
-- Nginx Proxy Manager
-- Homepage
-- Beszel
-- Uptime Kuma
-- OpenProject
-- Stirling PDF
-- OpenRefine
-- WebDAV dla Zotero
-
-## Znane problemy
-
-- Unbound restartuje się i wymaga diagnostyki.
-- Dysk systemowy jest zajęty w około 70–75%.
-- Backupy wymagają pełnego opisania.
-- Sieci i wolumeny Docker wymagają inwentaryzacji.
-
-## Zasada prowadzenia dokumentacji
-
-Każda trwała zmiana w HomeLabie powinna zostać opisana w dokumentacji i zatwierdzona commitem w Git.
----
-
-# Runbooki
-
-Dokumentacja operacyjna znajduje się w katalogu `runbooks`.
-
-## Dostępne
-
-- [Unbound](runbooks/unbound.md)
+- monitoringu,
+- backupów,
+- usług sieciowych.
 
 ## Dokumentacja
 
-### Dashboard administratora
+### Architektura
 
-- [Dashboard](inventory/dashboard.md)
+- overview.md
+- storage.md
+- network.md
+- backup.md
+
+### Inwentaryzacja
+
+- dashboard.md
+- services.md
+- technical-debt.md
 
 ### Runbooki
 
-- [Unbound](runbooks/unbound.md)
+- nextcloud.md
+- unbound.md
+
+### Plan rozwoju
+
+- ROADMAP.md
+
+### Historia zmian
+
+- CHANGELOG.md
+
+## Zasady
+
+Każda trwała zmiana infrastruktury:
+
+1. jest projektowana,
+2. jest wdrażana,
+3. jest opisywana w dokumentacji,
+4. kończy się commitem Git.
