@@ -52,3 +52,12 @@ Dokumentacja jest rozwijana równolegle z projektem.
 ## Zasada prowadzenia dokumentacji
 
 Każda trwała zmiana w HomeLabie powinna zostać opisana w dokumentacji i zatwierdzona commitem w Git.
+---
+
+# Runbooki
+
+Dokumentacja operacyjna znajduje się w katalogu `runbooks`.
+
+## Dostępne
+
+- [Unbound](runbooks/unbound.md)
