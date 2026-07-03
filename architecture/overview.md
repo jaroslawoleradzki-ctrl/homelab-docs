@@ -29,11 +29,13 @@ Docker
 ├── Beszel
 ├── Uptime Kuma
 └── WebDAV
-Reverse proxy
+```
+
+## Reverse proxy
 
 Do obsługi reverse proxy wykorzystywany jest Nginx Proxy Manager.
 
-Do uzupełnienia:
+### Do uzupełnienia:
 
 * domeny,
 * subdomeny,
