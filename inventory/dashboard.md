@@ -29,7 +29,6 @@
 | Paperless | | | | | | |
 | OpenProject | | | | | | |
 | Stirling PDF | | | | | | |
-| OpenRefine | | | | | | |
 | Beszel | | | | | | |
 | Uptime Kuma | | | | | | |
 | WebDAV | | | | | | |

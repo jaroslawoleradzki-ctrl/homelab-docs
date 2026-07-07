@@ -23,12 +23,11 @@ Docker
 ├── Paperless-ngx
 ├── OpenProject
 ├── Stirling PDF
-├── OpenRefine
 ├── Pi-hole
 ├── Unbound
 ├── Beszel
 ├── Uptime Kuma
-└── WebDAV
+└── Zotero WebDAV
 ```
 
 ## Reverse proxy

@@ -16,131 +16,140 @@ Jej głównym celem jest zapewnienie:
 
 # Założenia
 
-HomeLab wykorzystuje dwie warstwy przechowywania danych:
+HomeLab wykorzystuje dwie warstwy przechowywania danych.
 
 ## Warstwa operacyjna (SSD)
 
-Na dysku SSD znajdują się elementy wymagające wysokiej wydajności:
+Na dysku systemowym znajdują się:
 
 - Ubuntu Server
 - Docker Engine
 - Docker Compose
 - konfiguracje usług
 - bazy danych
-- cache
 - logi systemowe
+- dane operacyjne aplikacji
 
-SSD nie służy do przechowywania dużych danych użytkownika.
+Dysk SSD nie służy do przechowywania danych użytkowników.
 
 ---
 
 ## Warstwa danych (ZFS)
 
-Dwa dyski HDD 6 TB tworzą pulę ZFS Mirror.
-
-Warstwa ta przechowuje wszystkie dane użytkownika oraz trwałe dane aplikacji.
+Dwa dyski WD Red Plus 6 TB tworzą pulę ZFS Mirror.
 
 Planowana nazwa puli:
 
+```
 tank
+```
+
+Wszystkie trwałe dane użytkowników przechowywane są w tej puli.
 
 ---
 
-# Klasy danych
+# Struktura puli
 
-HomeLab przechowuje sześć podstawowych klas danych.
+```
+tank
+├── nextcloud-data
+├── immich-library
+├── shared-media
+├── backups
+└── git
+```
 
-## Cloud
+---
 
-Centralna prywatna chmura oparta o Nextcloud.
+# Datasety
 
-Przechowuje:
+## nextcloud-data
+
+Centralny magazyn danych użytkowników wykorzystywany przez Nextcloud.
+
+Przechowuje między innymi:
 
 - strukturę PARA
 - dokumenty prywatne
 - dokumenty rodzinne
 - dokumenty firmowe
 - materiały do doktoratu
-- współdzielone pliki rodziny
+- współdzielone pliki
+- foldery klientów
+- Zotero WebDAV
 
-Dataset:
+Dostęp:
 
-tank/cloud
-
----
-
-## Photos
-
-Biblioteka zdjęć.
-
-Docelowo:
-
-- kopia zdjęć z urządzeń Apple
-- możliwość korzystania z alternatywnych aplikacji do zarządzania zdjęciami
-
-Dataset:
-
-tank/photos
+- Nextcloud
+- WebDAV
 
 ---
 
-## Media
+## immich-library
 
-Biblioteka multimediów.
+Biblioteka zdjęć i filmów.
 
-Obejmuje:
-
-- filmy
-- muzykę
-
-Dataset:
-
-tank/media
-
----
-
-## AI
-
-Środowisko eksperymentalne.
+Docelowo wykorzystywana przez Immich.
 
 Przechowuje:
 
-- modele AI
-- embeddingi
-- bazy RAG
-- dane eksperymentalne
-
-Dataset:
-
-tank/ai
+- zdjęcia
+- filmy
 
 ---
 
-## Backups
+## shared-media
+
+Biblioteka dużych plików.
+
+Przechowuje:
+
+- obrazy ISO
+- instalatory
+- multimedia
+- materiały techniczne
+
+Dostęp:
+
+- SMB
+
+---
+
+## backups
 
 Centralna przestrzeń kopii zapasowych.
 
-Obejmuje:
+Przechowuje:
 
-- Time Machine
-- kopie komputerów Linux
+- backupy komputerów
 - backupy Dockera
 - eksporty baz danych
 - konfiguracje
-
-Dataset:
-
-tank/backups
+- kopie wybranych usług
 
 ---
 
-## Zotero WebDAV
+## git
 
-Przestrzeń przeznaczona wyłącznie dla synchronizacji załączników Zotero.
+Przestrzeń przeznaczona dla repozytoriów Git oraz przyszłych usług developerskich.
 
-Dataset:
+Może zawierać:
 
-tank/zotero-webdav
+- lokalne kopie repozytoriów
+- archiwalne projekty
+- przyszły serwer Forgejo/Gitea
+
+---
+
+# Dostęp do danych
+
+| Dataset | Nextcloud | SMB | WebDAV | Immich |
+|----------|-----------|-----|---------|---------|
+| nextcloud-data | ✓ | ✗ | ✓ | ✗ |
+| immich-library | ✗ | ✗ | ✗ | ✓ |
+| shared-media | ✗ | ✓ | ✗ | ✗ |
+| backups | ✗ | administrator | ✗ | ✗ |
+| git | ✗ | opcjonalnie | ✗ | ✗ |
 
 ---
 
@@ -150,13 +159,15 @@ tank/zotero-webdav
 
 2. Aplikacje korzystają z danych, ale nie definiują ich struktury.
 
-3. Wszystkie duże dane przechowywane są na ZFS.
+3. Wyjątkiem jest `nextcloud-data`, który jest wymaganym katalogiem danych Nextcloud.
 
-4. SSD przechowuje wyłącznie dane operacyjne.
+4. Wszystkie dane użytkowników przechowywane są na ZFS.
 
-5. Każda nowa usługa powinna zostać przypisana do jednej z istniejących klas danych lub uzasadnić utworzenie nowej.
+5. SSD przechowuje wyłącznie dane operacyjne.
 
-6. Backup nie jest częścią storage i opisany jest w osobnym dokumencie.
+6. Każda nowa usługa powinna zostać przypisana do istniejącego datasetu lub uzasadnić utworzenie nowego.
+
+7. Backup nie jest częścią architektury Storage i opisany jest w osobnym dokumencie.
 
 ---
 
@@ -164,4 +175,6 @@ tank/zotero-webdav
 
 Architektura została zaprojektowana z myślą o wieloletnim rozwoju HomeLab.
 
-Dodawanie nowych usług nie powinno wymagać zmiany struktury danych, a jedynie przypisania usługi do odpowiedniej klasy danych.
+Dodawanie nowych usług powinno polegać przede wszystkim na wykorzystaniu istniejących datasetów.
+
+Nowe datasety tworzone są wyłącznie wtedy, gdy wymagają odrębnych właściwości ZFS (snapshotów, uprawnień, kompresji lub sposobu udostępniania).
