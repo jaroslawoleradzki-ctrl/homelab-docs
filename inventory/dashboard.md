@@ -1,6 +1,6 @@
 # HomeLab Dashboard
 
-> Centralny punkt dostępu do wszystkich usług HomeLab.
+> Centralny punkt monitorowania stanu HomeLab.
 
 ---
 
@@ -19,13 +19,12 @@
 
 # Storage
 
-| Dataset | Przeznaczenie | Status |
-|----------|---------------|:------:|
-| tank/nextcloud-data | Nextcloud, PARA, Zotero WebDAV | ⏳ |
-| tank/immich-library | Zdjęcia i filmy | ⏳ |
-| tank/shared-media | ISO, multimedia, pliki współdzielone | ⏳ |
-| tank/backups | Kopie zapasowe | ⏳ |
-| tank/git | Repozytoria Git | ⏳ |
+| Element | Status |
+|----------|:------:|
+| SSD System | ✅ |
+| ZFS Mirror | ⏳ |
+| Snapshoty | ⏳ |
+| SMART Monitoring | ⏳ |
 
 ---
 
@@ -33,65 +32,50 @@
 
 | Usługa | LAN | Tailscale | Domena | Port | Status | Runbook |
 |--------|-----|-----------|---------|-----:|:------:|---------|
-| Homepage | | | | | ⏳ | |
-| Nginx Proxy Manager | | | | | ⏳ | |
-| Pi-hole | http://192.168.100.22:8080 | | | 8080 | ✅ | |
-| Unbound | localhost | — | — | 5335 | ✅ | ✅ runbooks/unbound.md |
+| Homepage | | | | | ⏳ | ⏳ |
+| Nginx Proxy Manager | | | | | ⏳ | ⏳ |
+| Pi-hole | http://192.168.100.22:8080 | — | — | 8080 | ✅ | ⏳ |
+| Unbound | localhost | — | — | 5335 | ✅ | ✅ |
 | Nextcloud | http://192.168.100.22:8087 | ⏳ | ⏳ | 8087 | ✅ | ⏳ |
-| Immich | | ⏳ | ⏳ | | ⏳ | |
-| Paperless-ngx | | ⏳ | ⏳ | | ⏳ | |
-| Stirling PDF | | | | | ⏳ | |
-| OpenProject | | | | | ⏳ | |
-| Beszel | | | | | ⏳ | |
-| Uptime Kuma | | | | | ⏳ | |
-| Homepage Dashboard | | | | | ⏳ | |
-| SMB | smb://homelab/shared-media | LAN | — | 445 | ⏳ | |
-| SFTP | ssh://homelab | Tailscale | — | 22 | ⏳ | |
-| Git (repozytoria) | | | | | ⏳ | |
+| Immich | | ⏳ | ⏳ | | ⏳ | ⏳ |
+| Paperless-ngx | | ⏳ | ⏳ | | ⏳ | ⏳ |
+| Stirling PDF | | ⏳ | ⏳ | | ⏳ | ⏳ |
+| OpenProject | | ⏳ | ⏳ | | ⏳ | ⏳ |
+| Beszel | | ⏳ | ⏳ | | ⏳ | ⏳ |
+| Uptime Kuma | | ⏳ | ⏳ | | ⏳ | ⏳ |
+| SMB (Samba) | smb://homelab/shared-media | LAN | — | 445 | ⏳ | ⏳ |
+| SFTP (OpenSSH) | ssh://homelab | Tailscale | — | 22 | ✅ | ⏳ |
+| Git | | | | | ⏳ | ⏳ |
 
 ---
 
-# DNS
+# Infrastruktura
 
-Pi-hole
-
-↓
-
-Unbound
-
-↓
-
-Root DNS
-
----
-
-# Reverse Proxy
-
-Nginx Proxy Manager
+| Element | Status | Runbook |
+|---------|:------:|---------|
+| Storage (ZFS) | ⏳ | ✅ |
+| Docker | ✅ | ⏳ |
+| Backup | ⏳ | ⏳ |
+| Monitoring | ⏳ | ⏳ |
+| Security | ⏳ | ⏳ |
+| Samba | ⏳ | ⏳ |
+| OpenSSH / SFTP | ✅ | ⏳ |
 
 ---
 
-# Monitoring
+# Architektura
 
-- Beszel
-- Uptime Kuma
-
----
-
-# Backup
-
-| Element | Metoda | Status |
-|---------|---------|:------:|
-| SSD System | ⏳ | ⏳ |
-| ZFS Snapshots | ⏳ | ⏳ |
-| Nextcloud | ⏳ | ⏳ |
-| Docker Volumes | ⏳ | ⏳ |
-| Databases | ⏳ | ⏳ |
+| Dokument | Status |
+|----------|:------:|
+| Storage Architecture | ✅ |
+| Network Architecture | ⏳ |
+| Security Architecture | ⏳ |
+| Backup Strategy | ⏳ |
 
 ---
 
 # Uwagi
 
-Ten plik jest głównym panelem administratora HomeLab.
+Dashboard pokazuje wyłącznie bieżący stan infrastruktury.
 
-Każda nowa usługa powinna zostać tutaj dopisana.
+Szczegóły architektury znajdują się w katalogu `docs/architecture`, a procedury administracyjne w `runbooks/`.
