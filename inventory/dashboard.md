@@ -11,7 +11,7 @@
 | Hostname | homelab |
 | LAN | 192.168.100.22 |
 | Tailscale | *(do uzupełnienia)* |
-| System | Ubuntu 24.04 LTS |
+| System | Ubuntu Server 24.04 LTS |
 | Docker | ✅ |
 | Portainer | ✅ |
 
@@ -25,8 +25,10 @@
 | ZFS Mirror | ✅ |
 | Datasets | ✅ |
 | Nextcloud Storage Migration | ✅ |
-| Snapshoty | ⏳ |
-| SMART Monitoring | ⏳ |
+| Snapshoty ZFS (Sanoid) | ✅ |
+| SMART Monitoring | ✅ |
+| Time Machine | ✅ |
+| Fedora Backup (SMB) | ✅ |
 
 ---
 
@@ -34,12 +36,15 @@
 
 | Dataset | Przeznaczenie | Status |
 |---------|---------------|:------:|
-| tank/cloud | Nextcloud, PARA, Zotero WebDAV | ✅ |
-| tank/photos | Zdjęcia (Immich) | ⏳ |
-| tank/media | Multimedia i pliki współdzielone | ⏳ |
-| tank/backups | Kopie zapasowe | ⏳ |
-| tank/git | Repozytoria Git | ⏳ |
-| tank/apps | Dane trwałe aplikacji | ⏳ |
+| tank/cloud | Nextcloud, dane użytkowników, OneDrive, Zotero | ✅ |
+| tank/photos | Biblioteka zdjęć / Immich | ✅ |
+| tank/media | Multimedia i pliki współdzielone | ✅ |
+| tank/backups | Kopie zapasowe | ✅ |
+| tank/backups/timemachine-macbookair-m4 | Time Machine MacBook Air M4 | ✅ |
+| tank/backups/timemachine-macbookair2017 | Time Machine MacBook Air 2017 | ✅ |
+| tank/backups/fedora44 | Backup Fedora 44 | ✅ |
+| tank/git | Repozytoria Git | ✅ |
+| tank/apps | Dane trwałe aplikacji | ✅ |
 
 ---
 
@@ -58,7 +63,11 @@
 | OpenProject | http://192.168.100.22:8090 | ⏳ | ⏳ | 8090 | ✅ | ⏳ |
 | Beszel | http://192.168.100.22:8060 | ⏳ | ⏳ | 8060 | ✅ | ⏳ |
 | Uptime Kuma | http://192.168.100.22:3001 | ⏳ | ⏳ | 3001 | ✅ | ⏳ |
-| SMB (Samba) | smb://homelab/shared-media | LAN | — | 445 | ⏳ | ⏳ |
+| Portainer | https://192.168.100.22:9443 | ⏳ | ⏳ | 9443 | ✅ | ⏳ |
+| Collabora | http://192.168.100.22:9980 | ⏳ | ⏳ | 9980 | ✅ | ⏳ |
+| Time Machine M4 | smb://homelab/TimeMachine-MacBookAir-M4 | LAN | — | 445 | ✅ | ⏳ |
+| Time Machine 2017 | smb://homelab/TimeMachine-MacBookAir-2017 | LAN | — | 445 | ✅ | ⏳ |
+| Fedora Backup | smb://homelab/FedoraBackup | LAN | — | 445 | ✅ | ⏳ |
 | SFTP (OpenSSH) | ssh://homelab | Tailscale | — | 22 | ✅ | ⏳ |
 | Git | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ |
 
@@ -70,10 +79,10 @@
 |---------|:------:|:--------:|
 | Storage (ZFS) | ✅ | ✅ |
 | Docker | ✅ | ⏳ |
-| Backup | ⏳ | ⏳ |
-| Monitoring | ⏳ | ⏳ |
+| Backup | ✅ | ⏳ |
+| Monitoring | ✅ | ⏳ |
 | Security | ⏳ | ⏳ |
-| Samba | ⏳ | ⏳ |
+| Samba | ✅ | ⏳ |
 | OpenSSH / SFTP | ✅ | ⏳ |
 
 ---
@@ -95,15 +104,33 @@
 |------|:------:|
 | Storage Foundation | ✅ |
 | Nextcloud on ZFS | ✅ |
-| Backup Foundation | ⏳ |
-| ZFS Snapshots | ⏳ |
-| SMART Monitoring | ⏳ |
-| Samba | ⏳ |
+| Backup Foundation | ✅ |
+| ZFS Snapshots | ✅ |
+| SMART Monitoring | ✅ |
+| Samba | ✅ |
+| Time Machine | ✅ |
+| Fedora Backup | ✅ |
 | Git Server | ⏳ |
 | Immich Migration | ⏳ |
 | Paperless Migration | ⏳ |
-| Pozostałe migracje na ZFS | ⏳ |
-| OneDrive → Nextcloud | ⏳ |
+| Migracja danych aplikacji na ZFS | ⏳ |
+| OneDrive → Nextcloud | ✅ |
+| Zotero → Nextcloud WebDAV | ✅ |
+
+---
+
+# Ostatnie zmiany
+
+## 2026-07
+
+- wdrożono ZFS Mirror,
+- skonfigurowano automatyczne snapshoty Sanoid,
+- skonfigurowano monitoring SMART,
+- uruchomiono Time Machine dla dwóch komputerów macOS,
+- dodano udział SMB dla Fedora 44,
+- przeniesiono Zotero WebDAV do Nextcloud,
+- zakończono migrację OneDrive do Nextcloud,
+- naprawiono problem Unicode/NFC w nazwach plików Nextcloud.
 
 ---
 
@@ -111,4 +138,9 @@
 
 Dashboard pokazuje wyłącznie bieżący stan infrastruktury.
 
-Szczegóły architektury znajdują się w `docs/architecture`, a procedury administracyjne w `runbooks/`.
+Szczegóły architektury znajdują się w `architecture/`, a procedury administracyjne w `runbooks/`.
+
+---
+
+**Ostatnia aktualizacja:** 2026-07-09  
+**Wersja infrastruktury:** 1.0

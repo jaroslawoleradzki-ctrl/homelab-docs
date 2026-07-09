@@ -2,7 +2,7 @@
 
 ## Cel
 
-Unbound jest lokalnym rekursywnym serwerem DNS wykorzystywanym przez Pi-hole.
+Unbound jest lokalnym rekursywnym serwerem DNS wykorzystywanym przez Pi-hole jako jedyny upstream DNS.
 
 Schemat działania:
 
@@ -16,14 +16,20 @@ Pi-hole
 Unbound
     │
     ▼
-Internet Root DNS
+Root DNS
 ```
 
 ---
 
-# Konfiguracja
+# Architektura
 
-## Docker
+- Docker
+- Kontener: `unbound`
+- Obraz: `mvance/unbound:latest`
+- Port hosta: **5335**
+- Port kontenera: **53**
+
+Mapowanie portów:
 
 ```yaml
 ports:
@@ -31,77 +37,112 @@ ports:
   - "5335:53/udp"
 ```
 
-Konfiguracja Pi-hole:
+---
 
-```text
-DNS1 = 127.0.0.1#5335
-DNS2 = no
+# Konfiguracja Pi-hole
+
+Upstream DNS:
+
 ```
+127.0.0.1#5335
+```
+
+Drugi serwer DNS:
+
+```
+wyłączony
+```
+
+Dzięki temu wszystkie zapytania DNS są rozwiązywane lokalnie przez Unbound.
 
 ---
 
-# Naprawa z dnia 2026-07-01
+# Pliki konfiguracyjne
 
-## Objawy
-
-Kontener `unbound` restartował się w pętli.
-
-Logi zawierały błędy:
-
-- brak `a-records.conf`
-- brak `srv-records.conf`
-- brak `forward-records.conf`
-
-Dodatkowo Docker mapował port:
-
-```text
-5335 -> 5335
-```
-
-podczas gdy Unbound nasłuchuje wewnątrz kontenera na porcie:
-
-```text
-53
-```
-
----
-
-## Wykonana naprawa
-
-Utworzono brakujące pliki:
+Kontener wymaga obecności następujących plików:
 
 - `a-records.conf`
 - `srv-records.conf`
 - `forward-records.conf`
 
-Poprawiono mapowanie portów:
-
-```yaml
-ports:
-  - "5335:53/tcp"
-  - "5335:53/udp"
-```
+Nawet jeśli są puste, muszą istnieć.
 
 ---
 
-## Test poprawności
+# Test poprawności
 
-Na serwerze wykonano:
+Sprawdzenie odpowiedzi DNS:
 
 ```bash
 dig @127.0.0.1 -p 5335 google.com
 ```
 
-Wynik:
+Oczekiwany wynik:
 
-```text
+```
 status: NOERROR
 ```
 
-Kontener działa poprawnie i odpowiada na zapytania DNS.
+---
+
+# Diagnostyka
+
+## Status kontenera
+
+```bash
+docker ps
+```
+
+lub
+
+```bash
+docker inspect unbound
+```
 
 ---
 
-# Uwagi
+## Logi
 
-Każda zmiana konfiguracji Unbound powinna być wykonywana przez aktualizację Stacka w Portainerze, a nie przez ręczne modyfikowanie działającego kontenera.
+```bash
+docker logs unbound
+```
+
+---
+
+## Typowe problemy
+
+### Kontener restartuje się
+
+Najczęstsze przyczyny:
+
+- brak wymaganych plików konfiguracyjnych,
+- błędne mapowanie portów,
+- niepoprawna konfiguracja stacka.
+
+---
+
+### Pi-hole nie rozwiązuje nazw
+
+Sprawdzić:
+
+- czy Unbound działa,
+- czy odpowiada na porcie 5335,
+- czy Pi-hole wskazuje `127.0.0.1#5335` jako jedyny upstream DNS.
+
+---
+
+# Aktualizacja
+
+Zmiany konfiguracji należy wykonywać przez aktualizację Stacka w Portainerze.
+
+Nie należy edytować działającego kontenera.
+
+---
+
+# Historia
+
+## 2026-07-01
+
+- utworzono brakujące pliki konfiguracyjne,
+- poprawiono mapowanie portów `5335 → 53`,
+- przywrócono stabilną pracę usługi.

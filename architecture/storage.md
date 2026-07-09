@@ -14,37 +14,37 @@ Jej głównym celem jest zapewnienie:
 
 ---
 
-# Założenia
+# Architektura
 
 HomeLab wykorzystuje dwie warstwy przechowywania danych.
 
 ## Warstwa operacyjna (SSD)
 
-Na dysku systemowym znajdują się:
+Na dysku NVMe znajdują się:
 
-- Ubuntu Server
-- Docker Engine
-- Docker Compose
-- konfiguracje usług
-- bazy danych
-- logi systemowe
-- dane operacyjne aplikacji
+- Ubuntu Server,
+- Docker Engine,
+- Docker Compose,
+- konfiguracje usług,
+- bazy danych kontenerów,
+- logi systemowe,
+- dane operacyjne aplikacji.
 
-Dysk SSD nie służy do przechowywania danych użytkowników.
+Dysk systemowy nie służy do przechowywania danych użytkowników.
 
 ---
 
 ## Warstwa danych (ZFS)
 
-Dwa dyski WD Red Plus 6 TB tworzą pulę ZFS Mirror.
+Dwa dyski WD Red Plus 6 TB pracują jako **ZFS Mirror**.
 
-Planowana nazwa puli:
+Pula danych:
 
 ```
 tank
 ```
 
-Wszystkie trwałe dane użytkowników przechowywane są w tej puli.
+Całość danych użytkowników przechowywana jest w tej puli.
 
 ---
 
@@ -52,129 +52,163 @@ Wszystkie trwałe dane użytkowników przechowywane są w tej puli.
 
 ```
 tank
-├── nextcloud-data
-├── immich-library
-├── shared-media
-├── backups
-└── git
+├── apps
+├── cloud
+├── git
+├── media
+├── photos
+└── backups
+    ├── timemachine-macbookair-m4
+    ├── timemachine-macbookair2017
+    └── fedora44
 ```
 
 ---
 
 # Datasety
 
-## nextcloud-data
+## apps
+
+Dataset przeznaczony na przyszłe aplikacje wymagające własnej przestrzeni danych.
+
+Obecnie pozostaje pusty.
+
+---
+
+## cloud
 
 Centralny magazyn danych użytkowników wykorzystywany przez Nextcloud.
 
-Przechowuje między innymi:
+Przechowuje wszystkie pliki użytkowników.
 
-- strukturę PARA
-- dokumenty prywatne
-- dokumenty rodzinne
-- dokumenty firmowe
-- materiały do doktoratu
-- współdzielone pliki
-- foldery klientów
-- Zotero WebDAV
+Przykładowa struktura:
 
-Dostęp:
+```
+tank/cloud
+└── joleradzki
+    └── files
+        ├── Documents
+        ├── OneDrive
+        ├── Photos
+        ├── Zotero
+        └── ...
+```
 
-- Nextcloud
-- WebDAV
+Folder `Zotero` jest udostępniany przez WebDAV Nextcloud.
 
----
-
-## immich-library
-
-Biblioteka zdjęć i filmów.
-
-Docelowo wykorzystywana przez Immich.
-
-Przechowuje:
-
-- zdjęcia
-- filmy
+Nie jest już wykorzystywany osobny kontener WebDAV.
 
 ---
 
-## shared-media
+## media
 
 Biblioteka dużych plików.
 
-Przechowuje:
+Przeznaczona na:
 
-- obrazy ISO
-- instalatory
-- multimedia
-- materiały techniczne
-
-Dostęp:
-
-- SMB
+- obrazy ISO,
+- multimedia,
+- archiwa,
+- materiały techniczne,
+- pliki współdzielone przez SMB.
 
 ---
 
-## backups
+## photos
 
-Centralna przestrzeń kopii zapasowych.
+Dataset przeznaczony dla biblioteki zdjęć.
 
-Przechowuje:
+Docelowo wykorzystywany przez Immich.
 
-- backupy komputerów
-- backupy Dockera
-- eksporty baz danych
-- konfiguracje
-- kopie wybranych usług
+Oddzielenie zdjęć od pozostałych danych umożliwia niezależną politykę snapshotów i backupów.
 
 ---
 
 ## git
 
-Przestrzeń przeznaczona dla repozytoriów Git oraz przyszłych usług developerskich.
+Repozytoria Git przechowywane lokalnie.
 
-Może zawierać:
+Przykłady:
 
-- lokalne kopie repozytoriów
-- archiwalne projekty
-- przyszły serwer Forgejo/Gitea
+- HomeLab
+- PhD
+- workshop-time-tracking
+
+Docelowo może zostać wykorzystany przez Forgejo lub Gitea.
+
+---
+
+## backups
+
+Dataset przeznaczony wyłącznie na kopie zapasowe.
+
+Zawiera osobne datasety:
+
+- Time Machine — MacBook Air M4,
+- Time Machine — MacBook Air 2017,
+- udział SMB dla Fedora 44,
+- przyszłe backupy usług.
+
+---
+
+# Snapshoty ZFS
+
+Automatyczne snapshoty realizowane są przez **Sanoid**.
+
+### Dane użytkowników
+
+- 24 snapshoty godzinowe,
+- 30 dziennych,
+- 8 tygodniowych,
+- 12 miesięcznych.
+
+### Time Machine
+
+Dla datasetów Time Machine stosowana jest osobna polityka:
+
+- 14 dziennych,
+- 8 tygodniowych,
+- 12 miesięcznych.
 
 ---
 
 # Dostęp do danych
 
-| Dataset | Nextcloud | SMB | WebDAV | Immich |
-|----------|-----------|-----|---------|---------|
-| nextcloud-data | ✓ | ✗ | ✓ | ✗ |
-| immich-library | ✗ | ✗ | ✗ | ✓ |
-| shared-media | ✗ | ✓ | ✗ | ✗ |
-| backups | ✗ | administrator | ✗ | ✗ |
-| git | ✗ | opcjonalnie | ✗ | ✗ |
+| Dataset | Nextcloud | SMB | WebDAV | Inne |
+|----------|-----------|-----|---------|------|
+| cloud | ✓ | ✗ | ✓ | |
+| media | ✗ | ✓ | ✗ | |
+| photos | ✗ | ✗ | ✗ | Immich |
+| backups | ✗ | ✓ | ✗ | Time Machine |
+| git | ✗ | opcjonalnie | ✗ | |
 
 ---
 
 # Zasady projektowe
 
-1. Dane należą do HomeLab, nie do aplikacji.
+1. Dane należą do infrastruktury HomeLab, a nie do aplikacji.
 
-2. Aplikacje korzystają z danych, ale nie definiują ich struktury.
+2. Kontenery mogą zostać odtworzone bez utraty danych.
 
-3. Wyjątkiem jest `nextcloud-data`, który jest wymaganym katalogiem danych Nextcloud.
+3. Dane użytkowników przechowywane są wyłącznie w puli ZFS.
 
-4. Wszystkie dane użytkowników przechowywane są na ZFS.
+4. SSD zawiera jedynie system operacyjny i dane operacyjne usług.
 
-5. SSD przechowuje wyłącznie dane operacyjne.
+5. Snapshoty ZFS stanowią pierwszą linię ochrony przed przypadkowym usunięciem danych.
 
-6. Każda nowa usługa powinna zostać przypisana do istniejącego datasetu lub uzasadnić utworzenie nowego.
+6. Każda nowa usługa powinna wykorzystywać istniejący dataset lub uzasadniać utworzenie nowego.
 
-7. Backup nie jest częścią architektury Storage i opisany jest w osobnym dokumencie.
+7. Backup i Disaster Recovery opisane są w odrębnych dokumentach.
 
 ---
 
 # Kierunek rozwoju
 
-Architektura została zaprojektowana z myślą o wieloletnim rozwoju HomeLab.
+Nowe usługi powinny wykorzystywać istniejącą strukturę datasetów.
 
-Dodawanie nowych usług powinno polegać przede wszystkim na wykorzystaniu istniejących datasetów.
+Nowe datasety tworzone są wyłącznie wtedy, gdy wymagają:
 
-Nowe datasety tworzone są wyłącznie wtedy, gdy wymagają odrębnych właściwości ZFS (snapshotów, uprawnień, kompresji lub sposobu udostępniania).
+- odmiennej polityki snapshotów,
+- innych uprawnień,
+- innej kompresji,
+- odmiennego sposobu udostępniania danych.

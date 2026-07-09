@@ -2,63 +2,121 @@
 
 ## Ogólny model
 
-HomeLab działa jako serwer usług lokalnych oparty o Ubuntu Server i Docker.
+HomeLab działa jako centralny serwer usług domowych oparty o Ubuntu Server, Docker oraz ZFS.
 
 ```text
-LAN / Internet
-      |
-      v
-Router
-      |
-      v
-HomeLab: 192.168.100.22
-      |
-      v
-Docker
-Warstwa usług
-Docker
+                Użytkownicy
+                     │
+                     ▼
+          LAN / VPN / Internet
+                     │
+                     ▼
+                 Router
+                     │
+                     ▼
+          HomeLab (192.168.100.22)
+                     │
+ ┌───────────────────┴───────────────────┐
+ │                                       │
+ ▼                                       ▼
+Ubuntu Server 24.04 LTS              ZFS Mirror
+                                     (tank)
+ │                                       │
+ ▼                                       ▼
+Docker Engine                     Dane użytkowników
+ │
+ ▼
+Usługi kontenerowe
 ├── Nginx Proxy Manager
 ├── Homepage
 ├── Nextcloud
+├── Collabora
+├── Immich
 ├── Paperless-ngx
 ├── OpenProject
 ├── Stirling PDF
 ├── Pi-hole
 ├── Unbound
 ├── Beszel
-├── Uptime Kuma
-└── Zotero WebDAV
+└── Uptime Kuma
 ```
 
-## Reverse proxy
+---
 
-Do obsługi reverse proxy wykorzystywany jest Nginx Proxy Manager.
+# Warstwy architektury
 
-### Do uzupełnienia:
+## System operacyjny
 
-* domeny,
-* subdomeny,
-* certyfikaty SSL,
-* usługi wystawione poza LAN,
-* usługi dostępne tylko lokalnie.
+- Ubuntu Server 24.04 LTS
+
+---
+
+## Kontenery
+
+Wszystkie usługi uruchamiane są jako kontenery Docker Compose.
+
+---
+
+## Storage
+
+Dane użytkowników przechowywane są w puli ZFS `tank`.
+
+Najważniejsze datasety:
+
+- cloud
+- photos
+- media
+- git
+- backups
+
+Snapshoty realizowane są automatycznie przez Sanoid.
+
+---
+
+## Reverse Proxy
+
+Reverse proxy realizowany jest przez Nginx Proxy Manager.
+
+Odpowiada za:
+
+- HTTPS,
+- certyfikaty SSL,
+- publikację usług,
+- lokalny dostęp do aplikacji.
+
+---
 
 # Inwentaryzacja usług
 
 | Usługa | Status | Przeznaczenie |
 |--------|--------|---------------|
-| Nextcloud | działa | prywatna chmura |
-| MariaDB | działa | baza danych Nextcloud |
-| Paperless-ngx | działa | zarządzanie dokumentami |
-| PostgreSQL | działa | baza danych Paperless |
-| Redis | działa | cache Paperless |
-| Pi-hole | działa | filtrowanie DNS |
-| Unbound | problem | lokalny resolver DNS |
-| Nginx Proxy Manager | działa | reverse proxy |
-| Homepage | działa | dashboard usług |
-| Beszel | działa | monitoring serwera |
-| Beszel Agent | działa | agent monitorujący |
-| Uptime Kuma | działa | monitoring dostępności |
-| OpenProject | działa | zarządzanie projektami |
-| Stirling PDF | działa | operacje na PDF |
-| OpenRefine | działa | czyszczenie i analiza danych |
-| WebDAV | działa | synchronizacja Zotero |
+| Homepage | ✅ | dashboard usług |
+| Nginx Proxy Manager | ✅ | reverse proxy |
+| Nextcloud | ✅ | prywatna chmura |
+| MariaDB | ✅ | baza danych Nextcloud |
+| Collabora | ✅ | edycja dokumentów Office |
+| Immich | ✅ | zarządzanie zdjęciami |
+| Paperless-ngx | ✅ | zarządzanie dokumentami |
+| PostgreSQL | ✅ | baza danych Paperless |
+| Redis | ✅ | cache Paperless |
+| OpenProject | ✅ | zarządzanie projektami |
+| Stirling PDF | ✅ | operacje na PDF |
+| Pi-hole | ✅ | filtrowanie DNS |
+| Unbound | ✅ | lokalny resolver DNS |
+| Beszel | ✅ | monitoring serwera |
+| Beszel Agent | ✅ | agent monitorujący |
+| Uptime Kuma | ✅ | monitoring usług |
+
+---
+
+# Kierunek rozwoju
+
+Planowany rozwój obejmuje:
+
+- lokalne środowisko AI,
+- RAG,
+- Ollama,
+- Open WebUI,
+- AnythingLLM,
+- Navidrome,
+- dalszą automatyzację HomeLaba.
