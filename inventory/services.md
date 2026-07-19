@@ -1,88 +1,67 @@
-# Services Inventory
+# Inwentaryzacja usług
 
-## Cel
+Dokument opisuje usługi działające na hostach `homelab` i `ai-node`.
 
-Dokument zawiera pełną inwentaryzację usług uruchomionych w HomeLab.
+Nie należy utrzymywać tutaj ręcznie sumarycznej liczby kontenerów, ponieważ zmienia się ona wraz z aktualizacjami i kontenerami pomocniczymi.
 
-Aktualizowany jest po każdej trwałej zmianie infrastruktury.
+## HomeLab
 
----
+| Usługa | Kontener lub stos | Port | Dane | Status |
+|---|---|---:|---|---|
+| Homepage | `homepage` | 3000 | SSD | ✅ |
+| Nginx Proxy Manager | `nginx-proxy-manager` | 80, 81, 443 | SSD | ✅ |
+| Nextcloud | `nextcloud-app-1` | 8087 | `tank/cloud` | ✅ |
+| MariaDB Nextcloud | `nextcloud-db-1` | 3306 | SSD | ✅ |
+| Collabora | `collabora` | 9980 | SSD | ✅ |
+| Immich Server | `immich_server` | 2283 | `tank/photos` | ✅ |
+| Immich Machine Learning | `immich_machine_learning` | — | `tank/apps/immich/model-cache` | ✅ |
+| Immich PostgreSQL | `immich_postgres` | 5432 | `tank/apps/immich/postgres` | ✅ |
+| Paperless-ngx | `paperless-webserver-1` | 8010 | SSD + ZFS | ✅ |
+| PostgreSQL Paperless | `paperless-db-1` | 5432 | SSD | ✅ |
+| Redis Paperless | `paperless-broker-1` | 6379 | SSD | ✅ |
+| OpenProject | `openproject` | 8090 | SSD | ✅ |
+| Stirling PDF | `stirling-pdf` | 8020 | SSD | ✅ |
+| Pi-hole | `pihole` | 53, 8080 | SSD | ✅ |
+| Unbound | `unbound` | 5335 | SSD | ✅ |
+| Beszel | `beszel` | 8060 | SSD | ✅ |
+| Beszel Agent | `beszel-agent` | — | SSD | ✅ |
+| Uptime Kuma | `uptime-kuma` | 3001 | SSD | ✅ |
+| Portainer | `portainer` | 9443 | SSD | ✅ |
 
-# Usługi
+## AI-node
 
-| Usługa | Kontener(y) | Port | Dane | Status | Reverse Proxy |
-|----------|-------------|------|------|--------|---------------|
-| Homepage | homepage | 3000 | SSD | ✅ | Tak |
-| Nginx Proxy Manager | nginx-proxy-manager | 80, 81, 443 | SSD | ✅ | — |
-| Nextcloud | nextcloud-app-1 | 8087 | ZFS (`tank/cloud`) | ✅ | Tak |
-| MariaDB | nextcloud-db-1 | 3306 | SSD | ✅ | Nie |
-| Collabora | collabora | 9980 | SSD | ✅ | Tak |
-| Immich Server | immich_server | 2283 | ZFS (`tank/photos`) | ✅ | Tak |
-| Immich Machine Learning | immich_machine_learning | — | SSD | ✅ | Nie |
-| Immich PostgreSQL | immich_postgres | 5432 | SSD | ✅ | Nie |
-| Immich Redis | immich_redis | 6379 | SSD | ✅ | Nie |
-| Paperless-ngx | paperless-webserver-1 | 8010 | SSD + ZFS | ✅ | Tak |
-| PostgreSQL | paperless-db-1 | 5432 | SSD | ✅ | Nie |
-| Redis | paperless-broker-1 | 6379 | SSD | ✅ | Nie |
-| OpenProject | openproject | 8090 | SSD | ✅ | Tak |
-| Stirling PDF | stirling-pdf | 8020 | SSD | ✅ | Tak |
-| Pi-hole | pihole | 53, 67, 8080 | SSD | ✅ | Nie |
-| Unbound | unbound | 5335 | SSD | ✅ | Nie |
-| Beszel | beszel | 8060 | SSD | ✅ | Tak |
-| Beszel Agent | beszel-agent | — | SSD | ✅ | Nie |
-| Uptime Kuma | uptime-kuma | 3001 | SSD | ✅ | Tak |
-| Portainer | portainer | 9443 | SSD | ✅ | Tak |
+| Usługa | Kontener lub stos | Port | Dane | Status |
+|---|---|---:|---|---|
+| Ollama | `ollama` | 11434 | NVMe | ✅ |
+| Open WebUI | `open-webui` | 3000 | NVMe | ✅ |
+| Qdrant | `qdrant` | 6333, 6334 | NVMe | ✅ |
 
----
+## Storage
 
-# Storage
+### ZFS na `homelab`
 
-## ZFS
+- `tank/cloud`,
+- `tank/photos`,
+- `tank/media`,
+- `tank/git`,
+- `tank/backups`,
+- `tank/apps`.
 
-- tank/cloud
-- tank/photos
-- tank/media
-- tank/git
-- tank/backups
+### NVMe na `ai-node`
 
-## SSD
+- system operacyjny,
+- Docker,
+- modele Ollama,
+- Qdrant,
+- projekt `/srv/rag`.
 
-- system operacyjny
-- Docker
-- konfiguracje
-- bazy danych
-- logi
+## Backup i ochrona danych
 
----
+- snapshoty ZFS: Sanoid,
+- monitoring dysków: smartd,
+- Time Machine,
+- backup Fedora,
+- backup bazy Immich,
+- mirrory repozytoriów Git w `tank/git`.
 
-# Backup
-
-## Snapshoty ZFS
-
-Realizowane automatycznie przez Sanoid.
-
-## SMART
-
-Monitorowanie wszystkich dysków realizowane przez smartd.
-
-## Time Machine
-
-- MacBook Air M4
-- MacBook Air 2017
-
-## SMB
-
-- Fedora Backup
-
----
-
-# Statystyki
-
-| Parametr | Wartość |
-|-----------|---------|
-| System operacyjny | Ubuntu Server 24.04 LTS |
-| Docker Compose Stacks | 9 |
-| Kontenery | 19 |
-| Pool ZFS | tank |
-| Dyski danych | 2 × WD Red Plus 6 TB (Mirror) |
-| Dysk systemowy | Samsung 970 EVO Plus 500 GB |
+Pełny backup off-site pozostaje zadaniem otwartym.

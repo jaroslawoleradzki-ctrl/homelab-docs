@@ -1,89 +1,102 @@
 # HomeLab Roadmap
 
-## Vision
+## Wizja
 
-Celem HomeLaba jest stworzenie niezawodnej platformy do:
+Celem HomeLaba jest stworzenie niezawodnej, prywatnej platformy do:
 
 - przechowywania danych,
 - automatyzacji,
-- środowiska AI,
+- lokalnego AI,
 - pracy naukowej,
 - monitoringu infrastruktury,
-- usług domowych.
+- usług domowych,
+- backupu lokalnego i off-site.
 
----
+## Stan obecny
 
-## Current State
+### Infrastruktura
 
-### Infrastructure
-
-- ✅ Ubuntu Server 24.04 LTS
-- ✅ Docker
+- ✅ Ubuntu Server 24.04 LTS na `homelab`
+- ✅ Ubuntu Server 24.04 LTS na `ai-node`
+- ✅ Docker i Docker Compose
 - ✅ ZFS Mirror
-- ✅ Snapshoty Sanoid
-- ✅ SMART monitoring
+- ✅ snapshoty Sanoid
+- ✅ monitoring SMART
+- ✅ Tailscale
+- ✅ Wake-on-LAN skonfigurowany na `ai-node`
 
-### Storage
+### Storage i dane
 
 - ✅ Nextcloud
-- ✅ Time Machine (2 komputery)
-- ✅ Fedora Backup Share
+- ✅ Time Machine
+- ✅ backup Fedora
 - ✅ Zotero przez Nextcloud WebDAV
+- ✅ Immich
+- ✅ Paperless-ngx
+- ✅ repozytoria Git mirrorowane na HomeLab
 
-### Monitoring
+### Monitoring i sieć
 
 - ✅ Homepage
 - ✅ Beszel
 - ✅ Uptime Kuma
-
-### Network
-
 - ✅ Pi-hole
 - ✅ Unbound
 - ✅ Nginx Proxy Manager
 
----
+### Lokalne AI
 
-## Short Term
+- ✅ Ollama
+- ✅ Open WebUI
+- ✅ Qdrant
+- ✅ Gemma 4
+- ✅ BGE-M3
+- ✅ Docling
+- ✅ RapidOCR
+- ✅ testowy pipeline RAG: parser → chunking → embedding → Qdrant → retrieval
 
-- WoL
-- domena oleradzki.pl
-- HTTPS dla wszystkich usług
-- backup konfiguracji
-- dokumentacja disaster recovery
+## Najbliższe zadania
 
----
+- [ ] wystawienie wybranych usług pod domeną `oleradzki.pl`,
+- [ ] uporządkowanie HTTPS i certyfikatów,
+- [ ] dokumentacja disaster recovery,
+- [ ] backup konfiguracji Docker Compose,
+- [ ] pełny backup off-site,
+- [ ] weryfikacja Wake-on-LAN na `homelab`,
+- [ ] dokumentacja dostępu zdalnego i Tailscale,
+- [ ] uporządkowanie polityki aktualizacji kontenerów.
 
-## Mid Term
+## Średni termin
 
-- Grafana
-- Prometheus
-- Navidrome
-- Immich produkcyjnie
-- Paperless OCR tuning
+- [ ] Prometheus i Grafana,
+- [ ] Navidrome,
+- [ ] strojenie OCR Paperless,
+- [ ] produkcyjne wdrożenie Immich z dostępem zewnętrznym,
+- [ ] stabilny interfejs API dla lokalnego RAG,
+- [ ] integracja RAG z Open WebUI,
+- [ ] automatyczny ingestion dokumentów,
+- [ ] ocena NetBird self-hosted jako alternatywy dla Tailscale,
+- [ ] przygotowanie wydzielonej sieci dla IoT.
 
----
+## Długi termin
 
-## Long Term
+- [ ] agentowe automatyzacje AI,
+- [ ] wspólna pamięć modeli i agentów,
+- [ ] integracja z Joplin lub innym repozytorium wiedzy,
+- [ ] drugi serwer backupowy poza lokalizacją,
+- [ ] segmentacja VLAN,
+- [ ] rozważenie dedykowanego firewalla/routera.
 
-- Agentic OS
-- Ollama
-- Open WebUI
-- AnythingLLM
-- RAG
-- lokalne modele AI
-- automatyzacje AI
-
----
-
-## Completed Milestones
+## Zakończone kamienie milowe
 
 ### 2026-07
 
-- uruchomienie HomeLaba
-- migracja na ZFS
-- wdrożenie Time Machine
-- wdrożenie Sanoid
-- wdrożenie SMART
-- wdrożenie Nextcloud
-- migracja Zotero do Nextcloud WebDAV
+- uruchomienie HomeLaba,
+- migracja danych na ZFS,
+- wdrożenie Time Machine,
+- wdrożenie Sanoid i SMART,
+- wdrożenie Nextcloud i Zotero WebDAV,
+- uruchomienie Immich,
+- uruchomienie AI-node,
+- wdrożenie Ollama, Open WebUI i Qdrant,
+- uruchomienie testowego pipeline lokalnego RAG.

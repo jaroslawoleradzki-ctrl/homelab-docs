@@ -1,67 +1,92 @@
 # HomeLab
 
-Repozytorium zawiera dokumentację oraz konfigurację mojego HomeLaba.
+Repozytorium zawiera dokumentację infrastruktury HomeLab oraz AI-node.
 
 ## Cel
 
-HomeLab jest centralną platformą IT wykorzystywaną do:
+Środowisko służy jako prywatna platforma do:
 
-- prywatnej chmury plików,
-- zarządzania dokumentami,
-- przechowywania zdjęć,
-- środowiska AI,
-- automatyzacji,
-- monitoringu,
-- backupów,
-- usług sieciowych.
+- przechowywania plików i kopii zapasowych,
+- zarządzania dokumentami i zdjęciami,
+- hostowania usług domowych,
+- monitoringu infrastruktury,
+- lokalnego środowiska AI,
+- eksperymentów z RAG i automatyzacją.
+
+## Hosty
+
+| Host | Adres LAN | Rola |
+|---|---|---|
+| `homelab` | `192.168.100.22` | storage, usługi domowe, DNS, monitoring i backup |
+| `ai-node` | `192.168.100.29` | lokalne modele AI, embeddingi, Qdrant i RAG |
 
 ## Aktualny stan
 
-Platforma działa na Ubuntu Server 24.04 LTS i wykorzystuje:
+### HomeLab
 
-- ZFS Mirror jako główną przestrzeń danych,
-- Nextcloud jako prywatną chmurę,
-- Immich do zarządzania zdjęciami,
-- Paperless-ngx do dokumentów,
-- Homepage jako dashboard usług,
-- Pi-hole + Unbound jako lokalny DNS,
-- Beszel i Uptime Kuma do monitoringu,
-- OpenProject do zarządzania projektami,
-- Stirling PDF do pracy z dokumentami,
-- automatyczne snapshoty ZFS (Sanoid),
-- monitoring SMART dysków,
-- backupy Time Machine dla komputerów macOS.
+- Ubuntu Server 24.04 LTS,
+- Docker i Docker Compose,
+- ZFS Mirror `tank` na 2 × WD Red Plus 6 TB,
+- Nextcloud,
+- Immich,
+- Paperless-ngx,
+- Collabora,
+- OpenProject,
+- Stirling PDF,
+- Pi-hole + Unbound,
+- Nginx Proxy Manager,
+- Beszel,
+- Uptime Kuma,
+- Portainer,
+- Tailscale,
+- snapshoty ZFS przez Sanoid,
+- monitoring SMART,
+- Time Machine i backup Fedora.
+
+### AI-node
+
+- Ubuntu Server 24.04 LTS,
+- Ollama z akceleracją Vulkan na Radeon 780M,
+- Open WebUI,
+- Qdrant,
+- model generatywny Gemma 4,
+- embeddingi BGE-M3,
+- projekt lokalnego RAG w `/srv/rag`,
+- Docling i RapidOCR.
 
 ## Dokumentacja
 
 ### Architektura
 
-- overview.md
-- storage.md
-- network.md
-- backup.md
+- [Przegląd środowiska](architecture/overview.md)
+- [Sieć](architecture/network.md)
+- [AI-node](architecture/ai-node.md)
+- [Storage](architecture/storage.md)
+- [Backup](architecture/backup.md)
 
 ### Inwentaryzacja
 
-- dashboard.md
-- services.md
-- technical-debt.md
+- [Hosty](inventory/hosts.md)
+- [Usługi](inventory/services.md)
+- [Dashboard](inventory/dashboard.md)
+- [Dług techniczny](inventory/technical-debt.md)
+
+### Projekty
+
+- [Lokalny RAG](projects/local-rag.md)
 
 ### Runbooki
 
-- nextcloud.md
-- storage-setup.md
-- unbound.md
+- [Nextcloud](runbooks/nextcloud.md)
+- [Konfiguracja storage](runbooks/storage-setup.md)
+- [Unbound](runbooks/unbound.md)
 
-### Plan rozwoju
+### Zarządzanie rozwojem
 
-- ROADMAP.md
+- [Roadmap](ROADMAP.md)
+- [Historia zmian](CHANGELOG.md)
 
-### Historia zmian
-
-- CHANGELOG.md
-
-## Zasady
+## Zasady dokumentacji
 
 Każda trwała zmiana infrastruktury:
 
@@ -69,3 +94,7 @@ Każda trwała zmiana infrastruktury:
 2. jest wdrażana,
 3. jest opisywana w dokumentacji,
 4. kończy się commitem Git.
+
+Dane szybkozmienne, takie jak liczba kontenerów, wersje obrazów i zajętość storage, należy potwierdzać poleceniami diagnostycznymi zamiast utrzymywać jako stałe wartości w dokumentacji.
+
+_Ostatni audyt dokumentacji: 2026-07-19._
