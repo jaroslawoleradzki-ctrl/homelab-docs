@@ -29,7 +29,6 @@ Repozytorium zawiera dokumentację infrastruktury HomeLab oraz AI-node.
 - ZFS Mirror `tank` na 2 × WD Red Plus 6 TB,
 - Nextcloud,
 - Immich,
-- Paperless-ngx,
 - Collabora,
 - OpenProject,
 - Stirling PDF,
@@ -97,4 +96,4 @@ Każda trwała zmiana infrastruktury:
 
 Dane szybkozmienne, takie jak liczba kontenerów, wersje obrazów i zajętość storage, należy potwierdzać poleceniami diagnostycznymi zamiast utrzymywać jako stałe wartości w dokumentacji.
 
-_Ostatni audyt dokumentacji: 2026-07-19._
+_Ostatni audyt dokumentacji: 2026-07-21._
