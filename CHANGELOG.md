@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1] - 2026-07-21
+
+### Removed
+
+- usunięto Paperless-ngx z hosta `homelab`,
+- usunięto kontenery webserver, PostgreSQL i Redis należące do stosu Paperless-ngx,
+- usunięto Paperless-ngx z inwentaryzacji usług, opisu architektury i roadmapy.
+
 ## [1.2.0] - 2026-07-19
 
 ### Added
