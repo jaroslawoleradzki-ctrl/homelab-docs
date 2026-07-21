@@ -32,7 +32,6 @@ Celem HomeLaba jest stworzenie niezawodnej, prywatnej platformy do:
 - ✅ backup Fedora
 - ✅ Zotero przez Nextcloud WebDAV
 - ✅ Immich
-- ✅ Paperless-ngx
 - ✅ repozytoria Git mirrorowane na HomeLab
 
 ### Monitoring i sieć
@@ -70,7 +69,6 @@ Celem HomeLaba jest stworzenie niezawodnej, prywatnej platformy do:
 
 - [ ] Prometheus i Grafana,
 - [ ] Navidrome,
-- [ ] strojenie OCR Paperless,
 - [ ] produkcyjne wdrożenie Immich z dostępem zewnętrznym,
 - [ ] stabilny interfejs API dla lokalnego RAG,
 - [ ] integracja RAG z Open WebUI,
