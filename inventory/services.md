@@ -32,6 +32,9 @@ Nie należy utrzymywać tutaj ręcznie sumarycznej liczby kontenerów, ponieważ
 | Ollama | `ollama` | 11434 | NVMe | ✅ |
 | Open WebUI | `open-webui` | 3000 | NVMe | ✅ |
 | Qdrant | `qdrant` | 6333, 6334 | NVMe | ✅ |
+| OpenClaw Gateway | `openclaw-openclaw-gateway-1` | 18789-18790 | NVMe | ✅ |
+| OpenClaw CLI | `openclaw-openclaw-cli-1` | — | NVMe | ✅ |
+| Lokalny RAG | procesy w `/srv/rag` | — | NVMe | rozwój |
 
 ## Storage
 
@@ -50,7 +53,8 @@ Nie należy utrzymywać tutaj ręcznie sumarycznej liczby kontenerów, ponieważ
 - Docker,
 - modele Ollama,
 - Qdrant,
-- projekt `/srv/rag`.
+- projekt `/srv/rag`,
+- stos OpenClaw w `/srv/compose/openclaw`.
 
 ## Backup i ochrona danych
 
@@ -61,4 +65,4 @@ Nie należy utrzymywać tutaj ręcznie sumarycznej liczby kontenerów, ponieważ
 - backup bazy Immich,
 - mirrory repozytoriów Git w `tank/git`.
 
-Pełny backup off-site pozostaje zadaniem otwartym.
+Pełny backup off-site oraz backup konfiguracji i danych AI-node pozostają zadaniami otwartymi.
