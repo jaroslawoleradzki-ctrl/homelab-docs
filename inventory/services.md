@@ -16,9 +16,6 @@ Nie należy utrzymywać tutaj ręcznie sumarycznej liczby kontenerów, ponieważ
 | Immich Server | `immich_server` | 2283 | `tank/photos` | ✅ |
 | Immich Machine Learning | `immich_machine_learning` | — | `tank/apps/immich/model-cache` | ✅ |
 | Immich PostgreSQL | `immich_postgres` | 5432 | `tank/apps/immich/postgres` | ✅ |
-| Paperless-ngx | `paperless-webserver-1` | 8010 | SSD + ZFS | ✅ |
-| PostgreSQL Paperless | `paperless-db-1` | 5432 | SSD | ✅ |
-| Redis Paperless | `paperless-broker-1` | 6379 | SSD | ✅ |
 | OpenProject | `openproject` | 8090 | SSD | ✅ |
 | Stirling PDF | `stirling-pdf` | 8020 | SSD | ✅ |
 | Pi-hole | `pihole` | 53, 8080 | SSD | ✅ |
