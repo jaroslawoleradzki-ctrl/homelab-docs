@@ -1,90 +1,79 @@
-# Technical Debt
+# Dług techniczny
 
-Dokument zawiera listę świadomie odłożonych zadań technicznych oraz decyzji architektonicznych wymagających realizacji w przyszłości.
+Dokument zawiera świadomie odłożone zadania oraz decyzje wymagające dalszej pracy.
 
----
+## Wysoki priorytet
 
-# Wysoki priorytet
+### Backup i odtwarzanie
 
-## Bezpieczeństwo
+- przygotować pełny backup off-site,
+- opracować disaster recovery dla `homelab`,
+- przygotować backup konfiguracji Docker Compose,
+- przygotować backup i procedurę odtworzenia `ai-node`, w tym Qdrant, RAG i konfigurację OpenClaw,
+- wykonać testowe odtworzenie kluczowych usług.
 
-- Wdrożyć HTTPS dla wszystkich usług publikowanych przez Nginx Proxy Manager.
-- Skonfigurować domenę `oleradzki.pl`.
-- Opracować i wdrożyć politykę kopii zapasowych konfiguracji usług.
+### Bezpieczeństwo
 
-## Backup
+- uporządkować domeny, HTTPS i certyfikaty,
+- ograniczyć publiczną ekspozycję usług,
+- wyłączyć `allowInsecureAuth` w OpenClaw,
+- skonfigurować rate limiting i dozwolone origins OpenClaw,
+- zweryfikować zakres narzędzi elevated i dostęp OpenClaw do Docker socket,
+- wdrożyć 2FA tam, gdzie jest dostępne.
 
-- Przygotować procedurę Disaster Recovery.
-- Zweryfikować możliwość odtworzenia HomeLaba wyłącznie z backupów.
+## Średni priorytet
 
----
+### Storage
 
-# Średni priorytet
+- potwierdzić zakończenie migracji danych Immich do `tank/photos`,
+- określić i udokumentować docelową lokalizację danych trwałych wszystkich usług,
+- przygotować runbook wymiany dysku w ZFS mirror,
+- monitorować pojemność i retencję snapshotów.
 
-## Storage
+### Sieć
 
-- Zakończyć migrację danych Immich do `tank/photos`.
-- Zakończyć migrację danych Paperless na ZFS.
-- Określić docelową lokalizację trwałych danych wszystkich usług.
+- zweryfikować Wake-on-LAN na `homelab` w BIOS/UEFI,
+- przygotować politykę publikowania usług przez Nginx Proxy Manager,
+- ocenić NetBird self-hosted jako alternatywę dla Tailscale,
+- zaprojektować segmentację IoT i przyszłe VLAN-y.
 
-## Dokumentacja
+### Docker i operacje
 
-- Przygotować `network.md`.
-- Przygotować `backup.md`.
-- Przygotować `security.md`.
-- Uzupełnić runbooki wszystkich usług.
+- zinwentaryzować wolumeny i sieci Docker,
+- wdrożyć jednolitą politykę aktualizacji kontenerów,
+- przygotować runbook aktualizacji Immich z backupem bazy,
+- przygotować runbook odtworzenia Nextcloud,
+- ustalić standard dodawania nowych usług do Homepage i monitoringu.
 
-## Docker
+### AI-node
 
-- Udokumentować sieci Docker.
-- Udokumentować wolumeny Docker.
-- Przygotować politykę aktualizacji kontenerów.
+- ukończyć stabilne API lokalnego RAG,
+- zintegrować RAG z Open WebUI,
+- uruchomić automatyczny ingestion dokumentów,
+- określić, które procesy AI mają działać stale, a które na żądanie,
+- dodać monitoring AI-node do centralnego dashboardu,
+- zakończyć utwardzenie OpenClaw.
 
----
+## Niski priorytet
 
-# Niski priorytet
+- uruchomić Navidrome,
+- wdrożyć Prometheus i Grafanę,
+- rozważyć Forgejo lub Gitea,
+- przygotować wspólną pamięć agentów i modeli,
+- ocenić integrację z Joplin.
 
-## AI
+## Zrealizowane
 
-- Wdrożyć Ollama.
-- Wdrożyć Open WebUI.
-- Wdrożyć AnythingLLM.
-- Zaprojektować lokalne środowisko RAG.
-
-## Multimedia
-
-- Uruchomić Navidrome.
-- Zintegrować bibliotekę muzyki z HomeLab.
-
-## Development
-
-- Wdrożyć Forgejo lub Gitea.
-- Przygotować standard dodawania nowych usług.
-
-## Monitoring
-
-- Rozbudować monitoring o Grafanę i Prometheusa.
-
----
-
-# Zrealizowane
-
-## Storage
-
-- ✅ Migracja danych Nextcloud na ZFS.
-- ✅ Snapshoty ZFS (Sanoid).
-- ✅ Monitoring SMART.
-- ✅ Time Machine dla dwóch komputerów macOS.
-- ✅ Backup SMB dla Fedora 44.
-
-## Nextcloud
-
-- ✅ Migracja Zotero WebDAV do Nextcloud.
-- ✅ Migracja OneDrive do Nextcloud.
-- ✅ Naprawa problemu z nazwami plików Unicode (NFC/NFD).
-
-## Infrastruktura
-
-- ✅ Stabilizacja Unbound.
-- ✅ Wdrożenie ZFS Mirror.
-- ✅ Dokumentacja architektury Storage.
+- ✅ ZFS mirror i datasety,
+- ✅ Sanoid i monitoring SMART,
+- ✅ Time Machine i backup Fedora,
+- ✅ migracja Nextcloud na ZFS,
+- ✅ Zotero przez Nextcloud WebDAV,
+- ✅ Immich,
+- ✅ Pi-hole i Unbound,
+- ✅ Tailscale,
+- ✅ mirrory Git w `tank/git`,
+- ✅ `ai-node` z Ollama, Open WebUI i Qdrant,
+- ✅ testowy pipeline RAG,
+- ✅ OpenClaw uruchomiony w Dockerze,
+- ✅ podstawowy zestaw runbooków administracyjnych.
