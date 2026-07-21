@@ -18,7 +18,7 @@ LAN 192.168.100.0/24
 | Host | Adres LAN | Interfejs | Rola |
 |---|---|---|---|
 | `homelab` | `192.168.100.22` | Ethernet | usługi, storage, DNS i backup |
-| `ai-node` | `192.168.100.29` | `enp1s0` | lokalne AI i RAG |
+| `ai-node` | `192.168.100.29` | `enp1s0` | lokalne AI, RAG i OpenClaw |
 
 Na `ai-node` Wi-Fi jest wyłączone. Podstawowym połączeniem jest Ethernet.
 
@@ -41,20 +41,11 @@ Pi-hole filtruje zapytania DNS, a Unbound pełni funkcję lokalnego resolvera re
 
 ## Reverse proxy
 
-Nginx Proxy Manager działa na `homelab` i obsługuje:
-
-- porty 80 i 443,
-- certyfikaty TLS,
-- lokalne i publiczne nazwy usług,
-- publikację wybranych aplikacji.
-
-Panel administracyjny działa na porcie 81.
+Nginx Proxy Manager działa na `homelab` i obsługuje porty 80 i 443, certyfikaty TLS oraz publikację wybranych aplikacji. Panel administracyjny działa na porcie 81.
 
 ## Dostęp zdalny
 
-Tailscale jest aktywny i stanowi podstawowy mechanizm zdalnego dostępu administracyjnego.
-
-Publiczne wystawianie usług przez domenę `oleradzki.pl` jest w trakcie przygotowania.
+Tailscale jest podstawowym mechanizmem zdalnego dostępu administracyjnego. Publiczne wystawianie usług powinno być realizowane wyłącznie świadomie przez Nginx Proxy Manager.
 
 ## Docker
 
@@ -64,21 +55,16 @@ Usługi działają w sieciach tworzonych przez poszczególne stosy Docker Compos
 
 ### AI-node
 
-Ollama, Open WebUI i pozostałe komponenty AI komunikują się przez sieć Docker `ai-backend`.
+Ollama, Open WebUI i Qdrant komunikują się przez sieć Docker `ai-backend`. OpenClaw działa w osobnym stosie w `/srv/compose/openclaw`.
 
 ## Firewall
 
-Na `homelab` działa UFW z domyślną polityką:
-
-- deny incoming,
-- allow outgoing.
-
-Dostęp do portów administracyjnych i usług jest ograniczony do LAN lub Tailscale, o ile dana usługa nie została świadomie opublikowana.
+Na `homelab` działa UFW z domyślną polityką `deny incoming` i `allow outgoing`. Dostęp do portów administracyjnych powinien być ograniczony do LAN lub Tailscale.
 
 ## Wake-on-LAN
 
-- `ai-node`: skonfigurowany w systemie i przetestowany,
-- `homelab`: konfiguracja systemowa została sprawdzona, ale działanie po wyłączeniu wymaga dalszej weryfikacji BIOS/UEFI.
+- `ai-node`: skonfigurowany i przetestowany,
+- `homelab`: konfiguracja systemowa sprawdzona, działanie po wyłączeniu nadal wymaga potwierdzenia ustawień BIOS/UEFI.
 
 ## Porty głównych usług
 
@@ -88,7 +74,6 @@ Dostęp do portów administracyjnych i usług jest ograniczony do LAN lub Tailsc
 | homelab | Pi-hole | 53, 8080 |
 | homelab | Unbound | 5335 |
 | homelab | Nextcloud | 8087 |
-| homelab | Paperless-ngx | 8010 |
 | homelab | Stirling PDF | 8020 |
 | homelab | Beszel | 8060 |
 | homelab | OpenProject | 8090 |
@@ -99,5 +84,6 @@ Dostęp do portów administracyjnych i usług jest ograniczony do LAN lub Tailsc
 | ai-node | Ollama | 11434 |
 | ai-node | Qdrant REST | 6333 |
 | ai-node | Qdrant gRPC | 6334 |
+| ai-node | OpenClaw Gateway | 18789-18790 |
 
-Qdrant jest obecnie związany z localhostem i nie jest przeznaczony do bezpośredniej publikacji w LAN.
+Qdrant jest związany z localhostem i nie jest przeznaczony do bezpośredniej publikacji w LAN.
