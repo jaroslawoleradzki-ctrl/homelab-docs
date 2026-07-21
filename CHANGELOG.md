@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.3.0] - 2026-07-21
+
+### Added
+
+- dodano indeks runbooków,
+- dodano runbook kontroli stanu obu hostów,
+- dodano runbook aktualizacji stosów Docker Compose,
+- dodano runbook mirrorów repozytoriów Git,
+- dodano runbook Wake-on-LAN,
+- dodano runbook stosu AI, RAG i OpenClaw.
+
+### Changed
+
+- wykonano pełny audyt dokumentacji środowiska dwuwęzłowego,
+- poprawiono system `ai-node` na Ubuntu Server 26.04 LTS,
+- uwzględniono `ai-node` w README, architekturze, inwentaryzacji i dashboardzie,
+- dodano OpenClaw do architektury i inwentaryzacji usług,
+- przebudowano dashboard stanu infrastruktury,
+- zaktualizowano roadmapę i priorytety backupu, disaster recovery oraz bezpieczeństwa OpenClaw,
+- ujednolicono zasadę weryfikowania danych szybkozmiennych poleceniami diagnostycznymi.
+
+### Fixed
+
+- usunięto pozostałe odwołania do Paperless-ngx z dashboardu,
+- usunięto nieaktualne informacje o jednohostowej architekturze,
+- poprawiono nieaktualne wpisy dotyczące systemu i roli `ai-node`.
+
 ## [1.2.1] - 2026-07-21
 
 ### Removed
