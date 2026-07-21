@@ -16,11 +16,11 @@
              │                       │
              ▼                       ▼
  homelab 192.168.100.22     ai-node 192.168.100.29
- storage i usługi domowe    lokalne AI i RAG
+ storage i usługi domowe    lokalne AI, RAG i agenty
              │                       │
              ▼                       ▼
        ZFS Mirror tank         Ollama / Open WebUI
-       Docker Compose          Qdrant / /srv/rag
+       Docker Compose          Qdrant / RAG / OpenClaw
 ```
 
 ## Host `homelab`
@@ -33,7 +33,7 @@
 - monitoring,
 - storage,
 - backup,
-- repozytoria Git.
+- mirrory repozytoriów Git.
 
 ### Platforma
 
@@ -68,15 +68,16 @@
 - embeddingi,
 - wyszukiwanie wektorowe,
 - przetwarzanie dokumentów,
-- pipeline RAG.
+- pipeline RAG,
+- środowisko agentowe OpenClaw.
 
 ### Platforma
 
 - Minisforum AI X1,
-- Ryzen 7 255,
+- AMD Ryzen 7 255,
 - Radeon 780M,
 - Kingston NVMe 1 TB,
-- Ubuntu Server 24.04 LTS,
+- Ubuntu Server 26.04 LTS,
 - Docker Compose.
 
 ### Najważniejsze usługi
@@ -84,7 +85,8 @@
 - Ollama,
 - Open WebUI,
 - Qdrant,
-- projekt RAG w `/srv/rag`.
+- projekt RAG w `/srv/rag`,
+- OpenClaw w `/srv/compose/openclaw`.
 
 ## Storage
 
@@ -99,11 +101,12 @@ Najważniejsze datasety:
 - `tank/backups`,
 - `tank/apps`.
 
-Snapshoty są wykonywane automatycznie przez Sanoid.
+Snapshoty są wykonywane automatycznie przez Sanoid. AI-node korzysta z lokalnego NVMe; strategia jego pełnego backupu pozostaje zadaniem otwartym.
 
 ## Dostęp
 
 - LAN: `192.168.100.0/24`,
 - zdalnie: Tailscale,
-- publikacja usług: Nginx Proxy Manager,
-- publiczna domena i certyfikaty: wdrożenie w toku.
+- publikacja usług: Nginx Proxy Manager na `homelab`,
+- Qdrant pozostaje usługą lokalną,
+- dostęp z Internetu jest ograniczany do świadomie wystawionych usług.
