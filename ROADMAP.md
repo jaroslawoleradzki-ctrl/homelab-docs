@@ -2,79 +2,66 @@
 
 ## Wizja
 
-Celem HomeLaba jest stworzenie niezawodnej, prywatnej platformy do:
-
-- przechowywania danych,
-- automatyzacji,
-- lokalnego AI,
-- pracy naukowej,
-- monitoringu infrastruktury,
-- usług domowych,
-- backupu lokalnego i off-site.
+Celem środowiska jest niezawodna, prywatna platforma do przechowywania danych, usług domowych, pracy naukowej, lokalnego AI, automatyzacji i backupu.
 
 ## Stan obecny
 
-### Infrastruktura
+### Hosty i infrastruktura
 
-- ✅ Ubuntu Server 24.04 LTS na `homelab`
-- ✅ Ubuntu Server 24.04 LTS na `ai-node`
-- ✅ Docker i Docker Compose
-- ✅ ZFS Mirror
-- ✅ snapshoty Sanoid
-- ✅ monitoring SMART
+- ✅ `homelab`: Ubuntu Server 24.04 LTS
+- ✅ `ai-node`: Ubuntu Server 26.04 LTS
+- ✅ Docker i Docker Compose na obu hostach
+- ✅ ZFS mirror `tank` na `homelab`
+- ✅ snapshoty Sanoid i monitoring SMART
 - ✅ Tailscale
-- ✅ Wake-on-LAN skonfigurowany na `ai-node`
+- ✅ Wake-on-LAN na `ai-node`
+- ⏳ Wake-on-LAN na `homelab` — test BIOS/UEFI
 
-### Storage i dane
+### Dane i usługi
 
-- ✅ Nextcloud
-- ✅ Time Machine
-- ✅ backup Fedora
-- ✅ Zotero przez Nextcloud WebDAV
+- ✅ Nextcloud i Collabora
 - ✅ Immich
-- ✅ repozytoria Git mirrorowane na HomeLab
-
-### Monitoring i sieć
-
-- ✅ Homepage
-- ✅ Beszel
-- ✅ Uptime Kuma
-- ✅ Pi-hole
-- ✅ Unbound
-- ✅ Nginx Proxy Manager
+- ✅ OpenProject i Stirling PDF
+- ✅ Time Machine i backup Fedora
+- ✅ Zotero przez Nextcloud WebDAV
+- ✅ mirrory repozytoriów Git w `tank/git`
+- ✅ Homepage, Beszel, Uptime Kuma i Portainer
+- ✅ Pi-hole, Unbound i Nginx Proxy Manager
 
 ### Lokalne AI
 
-- ✅ Ollama
+- ✅ Ollama z Vulkan
 - ✅ Open WebUI
 - ✅ Qdrant
-- ✅ Gemma 4
-- ✅ BGE-M3
-- ✅ Docling
-- ✅ RapidOCR
+- ✅ Gemma 4 i BGE-M3
+- ✅ Docling i RapidOCR
 - ✅ testowy pipeline RAG: parser → chunking → embedding → Qdrant → retrieval
+- ✅ OpenClaw uruchomiony w Dockerze
+- ⏳ API dla RAG
+- ⏳ utwardzenie konfiguracji OpenClaw
 
 ## Najbliższe zadania
 
-- [ ] wystawienie wybranych usług pod domeną `oleradzki.pl`,
-- [ ] uporządkowanie HTTPS i certyfikatów,
-- [ ] dokumentacja disaster recovery,
-- [ ] backup konfiguracji Docker Compose,
-- [ ] pełny backup off-site,
-- [ ] weryfikacja Wake-on-LAN na `homelab`,
-- [ ] dokumentacja dostępu zdalnego i Tailscale,
-- [ ] uporządkowanie polityki aktualizacji kontenerów.
+1. [ ] przygotować backup konfiguracji i danych `ai-node`,
+2. [ ] przygotować runbook disaster recovery dla `homelab`,
+3. [ ] przygotować pełny backup off-site,
+4. [ ] zweryfikować Wake-on-LAN na `homelab`,
+5. [ ] uporządkować domeny, HTTPS i certyfikaty,
+6. [ ] wdrożyć politykę aktualizacji kontenerów,
+7. [ ] przygotować runbook publikacji usługi przez Nginx Proxy Manager,
+8. [ ] przygotować runbook aktualizacji i odtworzenia Immich.
 
 ## Średni termin
 
-- [ ] Prometheus i Grafana,
-- [ ] Navidrome,
-- [ ] produkcyjne wdrożenie Immich z dostępem zewnętrznym,
-- [ ] stabilny interfejs API dla lokalnego RAG,
+- [ ] stabilne API lokalnego RAG,
 - [ ] integracja RAG z Open WebUI,
 - [ ] automatyczny ingestion dokumentów,
-- [ ] ocena NetBird self-hosted jako alternatywy dla Tailscale,
-- [ ] przygotowanie wydzielonej sieci dla IoT.
+- [ ] bezpieczny dostęp do OpenClaw spoza hosta,
+- [ ] Prometheus i Grafana,
+- [ ] Navidrome,
+- [ ] publiczny dostęp do Immich,
+- [ ] ocena NetBird self-hosted,
+- [ ] wydzielona sieć IoT.
 
 ## Długi termin
 
@@ -83,18 +70,15 @@ Celem HomeLaba jest stworzenie niezawodnej, prywatnej platformy do:
 - [ ] integracja z Joplin lub innym repozytorium wiedzy,
 - [ ] drugi serwer backupowy poza lokalizacją,
 - [ ] segmentacja VLAN,
-- [ ] rozważenie dedykowanego firewalla/routera.
+- [ ] dedykowany firewall/router.
 
-## Zakończone kamienie milowe
+## Zakończone kamienie milowe — 2026-07
 
-### 2026-07
-
-- uruchomienie HomeLaba,
-- migracja danych na ZFS,
-- wdrożenie Time Machine,
-- wdrożenie Sanoid i SMART,
-- wdrożenie Nextcloud i Zotero WebDAV,
-- uruchomienie Immich,
-- uruchomienie AI-node,
-- wdrożenie Ollama, Open WebUI i Qdrant,
-- uruchomienie testowego pipeline lokalnego RAG.
+- uruchomiono HomeLab i ZFS mirror,
+- wdrożono snapshoty, SMART, Time Machine i backup Fedora,
+- uruchomiono Nextcloud, Zotero WebDAV i Immich,
+- uruchomiono AI-node,
+- wdrożono Ollama, Open WebUI i Qdrant,
+- uruchomiono testowy pipeline lokalnego RAG,
+- uruchomiono OpenClaw,
+- wykonano pełny audyt dokumentacji i utworzono podstawowe runbooki.
