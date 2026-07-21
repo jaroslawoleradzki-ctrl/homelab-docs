@@ -1,146 +1,69 @@
-# HomeLab Dashboard
+# Dashboard stanu HomeLab
 
-> Centralny punkt monitorowania stanu HomeLab.
+Dokument jest skróconym widokiem środowiska. Dane szybkozmienne należy potwierdzać poleceniami z [runbooka kontroli stanu](../runbooks/health-check.md).
 
----
+## Hosty
 
-# Serwer
+| Host | LAN | System | Rola | Stan |
+|---|---|---|---|:---:|
+| `homelab` | `192.168.100.22` | Ubuntu Server 24.04 LTS | ZFS, usługi domowe, DNS, monitoring i backup | ✅ |
+| `ai-node` | `192.168.100.29` | Ubuntu Server 26.04 LTS | Ollama, Open WebUI, Qdrant, RAG i OpenClaw | ✅ |
 
-| Parametr | Wartość |
-|----------|----------|
-| Hostname | homelab |
-| LAN | 192.168.100.22 |
-| Tailscale | *(do uzupełnienia)* |
-| System | Ubuntu Server 24.04 LTS |
-| Docker | ✅ |
-| Portainer | ✅ |
+## Storage i ochrona danych
 
----
+| Element | Lokalizacja | Stan |
+|---|---|:---:|
+| ZFS mirror `tank` | `homelab`, 2 × WD Red Plus 6 TB | ✅ |
+| Snapshoty Sanoid | `homelab` | ✅ |
+| Monitoring SMART | `homelab` | ✅ |
+| Time Machine | `tank/backups` | ✅ |
+| Backup Fedora | `tank/backups/fedora44` | ✅ |
+| Mirrory Git | `tank/git` | ✅ |
+| Backup off-site | poza lokalizacją | ⏳ |
+| Backup AI-node | konfiguracje, modele i dane RAG | ⏳ |
 
-# Storage
+## Główne usługi HomeLab
 
-| Element | Status |
-|----------|:------:|
-| SSD System | ✅ |
-| ZFS Mirror | ✅ |
-| Datasets | ✅ |
-| Nextcloud Storage Migration | ✅ |
-| Snapshoty ZFS (Sanoid) | ✅ |
-| SMART Monitoring | ✅ |
-| Time Machine | ✅ |
-| Fedora Backup (SMB) | ✅ |
+| Usługa | Adres lub port | Stan | Runbook |
+|---|---|:---:|---|
+| Homepage | `http://192.168.100.22:3000` | ✅ | — |
+| Nginx Proxy Manager | `http://192.168.100.22:81` | ✅ | planowany |
+| Pi-hole | `http://192.168.100.22:8080/admin` | ✅ | — |
+| Unbound | `5335` | ✅ | [tak](../runbooks/unbound.md) |
+| Nextcloud | `https://nextcloud.klucznik.biz` | ✅ | [tak](../runbooks/nextcloud.md) |
+| Immich | `http://192.168.100.22:2283` | ✅ | planowany |
+| Stirling PDF | `http://192.168.100.22:8020` | ✅ | — |
+| OpenProject | `https://projekty.klucznik.biz` | ✅ | — |
+| Beszel | `http://192.168.100.22:8060` | ✅ | — |
+| Uptime Kuma | `http://192.168.100.22:3001` | ✅ | — |
+| Portainer | `https://192.168.100.22:9443` | ✅ | — |
+| Collabora | `9980` | ✅ | — |
 
----
+## Główne usługi AI-node
 
-# Pojemność Storage
+| Usługa | Port | Stan | Uwagi |
+|---|---:|:---:|---|
+| Open WebUI | 3000 | ✅ | interfejs użytkownika |
+| Ollama | 11434 | ✅ | Vulkan, Radeon 780M |
+| Qdrant REST | 6333 | ✅ | związany z localhostem |
+| Qdrant gRPC | 6334 | ✅ | związany z localhostem |
+| Lokalny RAG | — | rozwój | `/srv/rag` |
+| OpenClaw Gateway | 18789–18790 | ✅ | wymaga dalszego utwardzenia |
 
-| Dataset | Przeznaczenie | Status |
-|---------|---------------|:------:|
-| tank/cloud | Nextcloud, dane użytkowników, OneDrive, Zotero | ✅ |
-| tank/photos | Biblioteka zdjęć / Immich | ✅ |
-| tank/media | Multimedia i pliki współdzielone | ✅ |
-| tank/backups | Kopie zapasowe | ✅ |
-| tank/backups/timemachine-macbookair-m4 | Time Machine MacBook Air M4 | ✅ |
-| tank/backups/timemachine-macbookair2017 | Time Machine MacBook Air 2017 | ✅ |
-| tank/backups/fedora44 | Backup Fedora 44 | ✅ |
-| tank/git | Repozytoria Git | ✅ |
-| tank/apps | Dane trwałe aplikacji | ✅ |
+## Stan kluczowych obszarów
 
----
+| Obszar | Stan |
+|---|:---:|
+| Storage ZFS | ✅ |
+| DNS Pi-hole + Unbound | ✅ |
+| Monitoring | ✅ |
+| Dostęp Tailscale | ✅ |
+| Wake-on-LAN AI-node | ✅ |
+| Wake-on-LAN HomeLab | test BIOS/UEFI |
+| Publiczne domeny i TLS | w toku |
+| Disaster recovery | do przygotowania |
+| Backup off-site | do przygotowania |
 
-# Usługi
+## Ostatnia aktualizacja
 
-| Usługa | LAN | Tailscale | Domena | Port | Status | Runbook |
-|--------|-----|-----------|---------|-----:|:------:|:--------:|
-| Homepage | http://192.168.100.22:3000 | ⏳ | ⏳ | 3000 | ✅ | ⏳ |
-| Nginx Proxy Manager | http://192.168.100.22:81 | ⏳ | ⏳ | 81 | ✅ | ⏳ |
-| Pi-hole | http://192.168.100.22:8080 | — | — | 8080 | ✅ | ⏳ |
-| Unbound | localhost | — | — | 5335 | ✅ | ✅ |
-| Nextcloud | http://192.168.100.22:8087 | ⏳ | nextcloud.klucznik.biz | 8087 | ✅ | ✅ |
-| Immich | http://192.168.100.22:2283 | ⏳ | ⏳ | 2283 | ✅ | ⏳ |
-| Paperless-ngx | http://192.168.100.22:8010 | ⏳ | ⏳ | 8010 | ✅ | ⏳ |
-| Stirling PDF | http://192.168.100.22:8020 | ⏳ | ⏳ | 8020 | ✅ | ⏳ |
-| OpenProject | http://192.168.100.22:8090 | ⏳ | ⏳ | 8090 | ✅ | ⏳ |
-| Beszel | http://192.168.100.22:8060 | ⏳ | ⏳ | 8060 | ✅ | ⏳ |
-| Uptime Kuma | http://192.168.100.22:3001 | ⏳ | ⏳ | 3001 | ✅ | ⏳ |
-| Portainer | https://192.168.100.22:9443 | ⏳ | ⏳ | 9443 | ✅ | ⏳ |
-| Collabora | http://192.168.100.22:9980 | ⏳ | ⏳ | 9980 | ✅ | ⏳ |
-| Time Machine M4 | smb://homelab/TimeMachine-MacBookAir-M4 | LAN | — | 445 | ✅ | ⏳ |
-| Time Machine 2017 | smb://homelab/TimeMachine-MacBookAir-2017 | LAN | — | 445 | ✅ | ⏳ |
-| Fedora Backup | smb://homelab/FedoraBackup | LAN | — | 445 | ✅ | ⏳ |
-| SFTP (OpenSSH) | ssh://homelab | Tailscale | — | 22 | ✅ | ⏳ |
-| Git | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ |
-
----
-
-# Infrastruktura
-
-| Element | Status | Runbook |
-|---------|:------:|:--------:|
-| Storage (ZFS) | ✅ | ✅ |
-| Docker | ✅ | ⏳ |
-| Backup | ✅ | ⏳ |
-| Monitoring | ✅ | ⏳ |
-| Security | ⏳ | ⏳ |
-| Samba | ✅ | ⏳ |
-| OpenSSH / SFTP | ✅ | ⏳ |
-
----
-
-# Architektura
-
-| Dokument | Status |
-|----------|:------:|
-| Storage Architecture | ✅ |
-| Network Architecture | ⏳ |
-| Security Architecture | ⏳ |
-| Backup Strategy | ⏳ |
-
----
-
-# Roadmap
-
-| Etap | Status |
-|------|:------:|
-| Storage Foundation | ✅ |
-| Nextcloud on ZFS | ✅ |
-| Backup Foundation | ✅ |
-| ZFS Snapshots | ✅ |
-| SMART Monitoring | ✅ |
-| Samba | ✅ |
-| Time Machine | ✅ |
-| Fedora Backup | ✅ |
-| Git Server | ⏳ |
-| Immich Migration | ⏳ |
-| Paperless Migration | ⏳ |
-| Migracja danych aplikacji na ZFS | ⏳ |
-| OneDrive → Nextcloud | ✅ |
-| Zotero → Nextcloud WebDAV | ✅ |
-
----
-
-# Ostatnie zmiany
-
-## 2026-07
-
-- wdrożono ZFS Mirror,
-- skonfigurowano automatyczne snapshoty Sanoid,
-- skonfigurowano monitoring SMART,
-- uruchomiono Time Machine dla dwóch komputerów macOS,
-- dodano udział SMB dla Fedora 44,
-- przeniesiono Zotero WebDAV do Nextcloud,
-- zakończono migrację OneDrive do Nextcloud,
-- naprawiono problem Unicode/NFC w nazwach plików Nextcloud.
-
----
-
-# Uwagi
-
-Dashboard pokazuje wyłącznie bieżący stan infrastruktury.
-
-Szczegóły architektury znajdują się w `architecture/`, a procedury administracyjne w `runbooks/`.
-
----
-
-**Ostatnia aktualizacja:** 2026-07-09  
-**Wersja infrastruktury:** 1.0
+2026-07-21 — pełny audyt dokumentacji, uwzględnienie AI-node, usunięcie Paperless-ngx i dodanie pierwszego zestawu runbooków.
