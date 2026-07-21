@@ -52,7 +52,6 @@
 - Nextcloud,
 - Collabora,
 - Immich,
-- Paperless-ngx,
 - OpenProject,
 - Stirling PDF,
 - Pi-hole,
